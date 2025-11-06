@@ -1,8 +1,9 @@
 {
   "name": "@k-olya/wge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "web game engine",
   "scripts": {
+    "prepare": "npm run build",
     "test": "jest",
     "build": "tsc"
   },
