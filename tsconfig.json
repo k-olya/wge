@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "baseUrl": "./src",
+    "noImplicitAny": true,
+    "module": "ESNext",
+    "target": "ES2017",
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "rootDir": "./src",
+    "allowJs": true
+  }
+}

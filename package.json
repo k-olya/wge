@@ -1,0 +1,22 @@
+{
+  "name": "@k-olya/wge",
+  "version": "0.1.0",
+  "description": "web game engine",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
+  "exports": {
+    "./*": "./dist/*.js"
+  },
+  "types": "./dist/index.d.ts",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "gl-matrix": "^3.4.4",
+    "nanoevents": "^9.1.0"
+  }
+}
