@@ -1,6 +1,6 @@
 {
   "name": "@k-olya/wge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "web game engine",
   "scripts": {
     "test": "jest",
