@@ -11,6 +11,7 @@
   },
   "types": "./dist/index.d.ts",
   "author": "",
+  "repository": "https://github.com/k-olya/wge",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^5.6.2"
