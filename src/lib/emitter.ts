@@ -1,7 +1,7 @@
 import { createNanoEvents } from "nanoevents";
 import { Constructor } from "./mixin";
 import { Collection } from "./collection";
-import { debugMode } from "./debug";
+import { DEBUG_MODE } from "./debug";
 
 export type EventCallback = (...args: any[]) => void;
 export type Events = Collection<EventCallback>;

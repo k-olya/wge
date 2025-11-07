@@ -3,7 +3,7 @@ import { Lifecycle, LifecycleParent } from "../lifecycle";
 import { Collection } from "lib/collection";
 import { randomId } from "lib/id";
 import { DependencyQuery } from "lib/dependency-query";
-import { debugMode } from "lib/debug";
+import { DEBUG_MODE } from "lib/debug";
 
 export type QueryCollection = Collection<
   EntityQuery<any> | DependencyQuery<any>

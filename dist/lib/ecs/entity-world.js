@@ -1,7 +1,7 @@
 import { createNanoEvents } from "nanoevents";
 import { forEachComponent } from "./entity";
 import { EmitterObject } from "lib/emitter";
-import { debugMode } from "lib/debug";
+import { DEBUG_MODE } from "lib/debug";
 import { assume } from "lib/assume";
 // EntityWorld is a class that manages entities
 // and emits events when entities are modified
@@ -18,7 +18,7 @@ export class EntityWorld extends EmitterObject {
             // if debug mode is on, warn about overwriting entities
             // i don't throw an error here because otherwise games would crash
             // but the library is designed to manage only one entity object with a given id
-            if (debugMode) {
+            if (DEBUG_MODE) {
                 console.warn(`Overwriting entity with id "${entity._id}". If you didn't expect this, you might be unintentionally creating this entity twice. For updating existing entities please use setComponents or setComponent instead.`);
             }
             this.setComponents(prev, entity);
