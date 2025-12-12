@@ -45,3 +45,48 @@ export class UniqueEntityObserver extends Lifecycle {
         }
     }
 }
+// set propery on a property path, e.g. ["uniforms", "u_texture"] -> obj.uniforms.u_texture = value
+function setNestedProperty(obj, path, value) {
+    let current = obj;
+    for (let i = 0; i < path.length - 1; i++) {
+        const key = path[i];
+        if (!(key in current) || typeof current[key] !== 'object' || current[key] === null) {
+            current[key] = {};
+        }
+        current = current[key];
+    }
+    current[path[path.length - 1]] = value;
+}
+// observe an entity component and set it on a property path in an object
+export function observe(obj, property, id, options) {
+    var _a, _b;
+    const world = (_a = options === null || options === void 0 ? void 0 : options.world) !== null && _a !== void 0 ? _a : globalWorld;
+    const component = (_b = options === null || options === void 0 ? void 0 : options.component) !== null && _b !== void 0 ? _b : id;
+    const e = world.get(id);
+    if (!e) {
+        throw new Error(`Entity ${id} not found when creating an observer`);
+    }
+    const c = e[component];
+    // inject event handlers into onCreate
+    const onCreate = obj.onCreate.bind(obj);
+    obj.onCreate = function () {
+        onCreate();
+        // invoke propery path function if needed
+        if (Array.isArray(property)) {
+            obj.unbinders.push(world.on(`update-component-${component}`, () => {
+                setNestedProperty(obj, property, e[component]);
+            }));
+            setNestedProperty(obj, property, e[component]);
+        }
+        else {
+            // otherwise set property directly
+            obj.unbinders.push(world.on(`update-component-${component}`, () => {
+                // @ts-ignore
+                obj[property] = e[component];
+            }));
+            // @ts-ignore
+            obj[property] = c;
+        }
+    };
+    return c;
+}

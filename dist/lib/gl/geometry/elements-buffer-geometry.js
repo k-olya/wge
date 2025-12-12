@@ -36,7 +36,7 @@ export class ElementsBufferGeometry extends BufferGeometry {
     onFree() {
         var _a;
         (_a = this.indexBuffer) === null || _a === void 0 ? void 0 : _a.free();
-        super.free();
+        super.onFree();
         this.count = 0;
     }
     draw() {

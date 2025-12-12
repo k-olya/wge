@@ -1,7 +1,8 @@
-import { Lifecycle } from "lib/lifecycle";
+import { Lifecycle, LifecycleInterface } from "lib/lifecycle";
 import { EntityWorld } from "lib/ecs/entity-world";
 import { globalWorld } from "lib/ecs/global-world";
 import { Entity } from "./entity";
+import { System } from "./system";
 
 export interface EntityObserverOptions<T> {
   component?: string;
@@ -78,4 +79,54 @@ export class UniqueEntityObserver<T> extends Lifecycle<T> {
       unbind();
     }
   }
+}
+
+// set propery on a property path, e.g. ["uniforms", "u_texture"] -> obj.uniforms.u_texture = value
+function setNestedProperty(obj: any, path: string[], value: any) {
+  let current = obj;
+  for (let i = 0; i < path.length - 1; i++) {
+    const key = path[i];
+    if (!(key in current) || typeof current[key] !== 'object' || current[key] === null) {
+      current[key] = {};
+    }
+    current = current[key];
+  }
+  current[path[path.length - 1]] = value;
+}
+
+// observe an entity component and set it on a property path in an object
+export function observe<T>(obj: System, property: string | string[], id: string, options?: EntityObserverOptions<T>) {
+  const world = options?.world ?? globalWorld;
+  const component = options?.component ?? id;
+  const e = world.get(id);
+  if (!e) {
+    throw new Error(`Entity ${id} not found when creating an observer`);
+  }
+  const c = e[component] as T;
+  // inject event handlers into onCreate
+  const onCreate = obj.onCreate.bind(obj);
+  obj.onCreate = function () {
+    onCreate();
+    // invoke propery path function if needed
+    if (Array.isArray(property)) {
+      obj.unbinders.push(
+        world.on(`update-component-${component}`, () => {
+          setNestedProperty(obj, property, e[component] as T);
+        })
+      )
+      setNestedProperty(obj, property, e[component] as T);
+    } else {
+      // otherwise set property directly
+      obj.unbinders.push(
+        world.on(`update-component-${component}`, () => {
+          // @ts-ignore
+          obj[property] = e[component] as T;
+        })
+      )
+      // @ts-ignore
+      obj[property] = c;
+    }
+  }
+
+  return c;
 }

@@ -2,11 +2,10 @@ import { EntityQuery } from "./entity-query";
 import { Lifecycle, LifecycleParent } from "../lifecycle";
 import { Collection } from "lib/collection";
 import { randomId } from "lib/id";
-import { DependencyQuery } from "lib/dependency-query";
 import { DEBUG_MODE } from "lib/debug";
 
 export type QueryCollection = Collection<
-  EntityQuery<any> | DependencyQuery<any>
+  EntityQuery<any>
 >;
 
 export class System<

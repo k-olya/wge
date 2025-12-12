@@ -47,7 +47,7 @@ export class ElementsBufferGeometry extends BufferGeometry {
 
   onFree(): void {
     this.indexBuffer?.free();
-    super.free();
+    super.onFree();
     this.count = 0;
   }
 
